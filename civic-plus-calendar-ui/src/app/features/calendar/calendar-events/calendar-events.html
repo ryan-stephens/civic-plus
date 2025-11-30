@@ -1,0 +1,88 @@
+<div class="calendar-events-container">
+  <nz-card nzTitle="Calendar Events" [nzBordered]="true">
+    <!-- Error Alert -->
+    @if (error()) {
+      <nz-alert
+        nzType="error"
+        [nzMessage]="error()"
+        nzShowIcon
+        [nzCloseable]="true"
+        (nzOnClose)="error.set(null)"
+        style="margin-bottom: 16px"
+      ></nz-alert>
+    }
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div style="text-align: center; padding: 40px">
+        <nz-spin nzSimple></nz-spin>
+      </div>
+    }
+
+    <!-- Calendar and Events -->
+    @if (!isLoading()) {
+      <div nz-row [nzGutter]="16" class="calendar-row">
+        <!-- Calendar Column (Main) -->
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="16" [nzLg]="18">
+          <nz-calendar
+            (nzSelectChange)="onDateSelect($event)"
+            (nzPanelChange)="onMonthChange($event)"
+          >
+            <ul *nzDateCell="let date" class="events-cell">
+              @for (event of getEventsForDate(date); track event.id) {
+                <li (click)="onEventClick(event, $event)" class="event-badge">
+                  <nz-badge nzStatus="processing" [nzText]="event.title"></nz-badge>
+                </li>
+              }
+            </ul>
+          </nz-calendar>
+        </div>
+
+        <!-- Events List Column (Sidebar) -->
+        <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="6">
+          <div class="events-list-section">
+            <h3 style="margin-top: 0">Events</h3>
+
+            <div class="events-list-wrapper">
+              @if (filteredEvents().length > 0) {
+                <nz-list [nzDataSource]="filteredEvents()" nzBordered nzSize="small">
+                  @for (event of filteredEvents(); track event.id) {
+                    <nz-list-item (click)="onEventClick(event, $event)" class="event-item">
+                      <div class="event-content">
+                        <div class="event-title">{{ event.title }}</div>
+                        <div class="event-description">{{ event.description }}</div>
+                        <div class="event-dates">
+                          <span class="event-date">
+                            {{ event.startDate | date: 'short' }} -
+                            {{ event.endDate | date: 'short' }}
+                          </span>
+                        </div>
+                      </div>
+                    </nz-list-item>
+                  }
+                </nz-list>
+              } @else {
+                <nz-empty nzNotFoundContent="No events" style="margin-top: 20px"></nz-empty>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </nz-card>
+
+  <!-- Add Event Modal -->
+  <app-add-event-modal
+    [isVisible]="addEventModalVisible()"
+    [selectedDate]="selectedDate()"
+    (isVisibleChange)="onAddEventModalClose($event)"
+    (eventCreated)="onEventCreated($event)"
+  ></app-add-event-modal>
+
+  <!-- View Event Modal -->
+  <app-view-event-modal
+    [isVisible]="viewEventModalVisible()"
+    [event]="selectedEvent()"
+    (isVisibleChange)="onViewEventModalClose($event)"
+  ></app-view-event-modal>
+</div>

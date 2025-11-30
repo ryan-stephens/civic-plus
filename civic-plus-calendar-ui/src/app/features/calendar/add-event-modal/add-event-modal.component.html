@@ -1,0 +1,84 @@
+<dialog #modalDialog class="modal-dialog" [open]="isVisibleValue">
+  <div class="modal-overlay" (click)="handleCancel()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Event</h2>
+      <button class="modal-close" (click)="handleCancel()" type="button">×</button>
+    </div>
+
+    <div class="modal-body">
+      @if (form(); as currentForm) {
+        <form [formGroup]="currentForm" class="add-event-form">
+          <div class="form-group">
+            <label for="title" class="form-label"> Title <span class="required">*</span> </label>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Event title"
+              class="form-input"
+            />
+            @if (titleError()) {
+              <span class="error-message">Title is required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">
+              Description <span class="required">*</span>
+            </label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Event description"
+              class="form-input form-textarea"
+              rows="4"
+            ></textarea>
+            @if (descriptionError()) {
+              <span class="error-message">Description is required</span>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startDate" class="form-label">
+                Start Date <span class="required">*</span>
+              </label>
+              <input
+                id="startDate"
+                type="datetime-local"
+                formControlName="startDate"
+                class="form-input"
+              />
+              @if (startDateError()) {
+                <span class="error-message">Start date is required</span>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="endDate" class="form-label">
+                End Date <span class="required">*</span>
+              </label>
+              <input
+                id="endDate"
+                type="datetime-local"
+                formControlName="endDate"
+                class="form-input"
+              />
+              @if (endDateError()) {
+                <span class="error-message">End date is required</span>
+              }
+            </div>
+          </div>
+        </form>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="handleCancel()" type="button">Cancel</button>
+      <button class="btn btn-primary" (click)="handleOk()" [disabled]="isLoading()" type="button">
+        {{ isLoading() ? 'Creating...' : 'Create' }}
+      </button>
+    </div>
+  </div>
+</dialog>

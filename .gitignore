@@ -1,0 +1,43 @@
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Build outputs
+bin/
+obj/
+dist/
+/out-tsc
+
+# Dependencies
+node_modules/
+/package-lock.json
+/yarn.lock
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Angular
+.angular/
+/coverage
+
+# .NET
+.vs/
+*.user
+*.suo
+*.sln.DotSettings.user
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db

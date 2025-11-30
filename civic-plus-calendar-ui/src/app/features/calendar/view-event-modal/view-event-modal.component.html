@@ -1,0 +1,43 @@
+<dialog #modalDialog class="modal-dialog" [open]="isVisibleValue">
+  <div class="modal-overlay" (click)="handleClose()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Event Details</h2>
+      <button class="modal-close" (click)="handleClose()" type="button">×</button>
+    </div>
+
+    <div class="modal-body">
+      @if (event()) {
+        <div class="event-details">
+          <div class="detail-group">
+            <label class="detail-label">Title</label>
+            <p class="detail-value">{{ event()?.title }}</p>
+          </div>
+
+          <div class="detail-group">
+            <label class="detail-label">Description</label>
+            <p class="detail-value">{{ event()?.description }}</p>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-group">
+              <label class="detail-label">Start Date</label>
+              <p class="detail-value">{{ formatDate(event()?.startDate) }}</p>
+            </div>
+
+            <div class="detail-group">
+              <label class="detail-label">End Date</label>
+              <p class="detail-value">{{ formatDate(event()?.endDate) }}</p>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <p class="no-event">No event selected</p>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="handleClose()" type="button">Close</button>
+    </div>
+  </div>
+</dialog>
